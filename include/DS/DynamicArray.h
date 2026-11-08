@@ -54,7 +54,6 @@ private:
         block_end = nblock_end;
     }
 public:
-
     ~DynamicArray()
     {
         size_t N = size();
