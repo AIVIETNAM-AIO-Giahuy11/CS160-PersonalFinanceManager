@@ -24,6 +24,7 @@ public:
     Date(const std::string &x);
 
     friend std::istream &operator>>(std::istream &fin, Date &A);
+    friend std::ostream &operator<<(std::ostream &fout, const Date &A);
 
     int test();
     

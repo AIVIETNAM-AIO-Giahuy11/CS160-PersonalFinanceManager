@@ -71,6 +71,8 @@ Date::Date(const std::string &x) /* Format dd-mm-yyyy */
     D = _day; M = _month; Y = _year;
 }
 
+/* Stream Extractors */
+
 std::istream &operator>>(std::istream &fin, Date &A)
 {
     std::string UserInput;
@@ -88,6 +90,11 @@ std::istream &operator>>(std::istream &fin, Date &A)
     return fin;
 }
 
+std::ostream &operator<<(std::ostream &fout, const Date &A)
+{
+    fout << A.D << '-' << A.M << '-' << A.Y;
+    return fout;
+}
 
 int Date::test()
 {
