@@ -96,6 +96,11 @@ std::ostream &operator<<(std::ostream &fout, const Date &A)
     return fout;
 }
 
+/* Getters */
+inline int Date::day() const { return D; }
+inline int Date::month() const { return M; }
+inline int Date::year() const { return Y; }
+
 int Date::test()
 {
     return 0;

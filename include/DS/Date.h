@@ -29,6 +29,11 @@ public:
 
     auto operator<=>(const Date&) const = default;
 
+    inline int day() const;
+    inline int month() const;
+    inline int year() const;
+
+
     int test();
     
 };
