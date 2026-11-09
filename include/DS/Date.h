@@ -35,6 +35,9 @@ public:
     inline int month() const;
     inline int year() const;
 
+    Date operator+(int k);
+    Date operator-(int k);
+    int operator-(const Date &other);
 
     int test();
     

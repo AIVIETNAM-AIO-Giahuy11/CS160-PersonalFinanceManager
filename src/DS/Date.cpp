@@ -1,6 +1,6 @@
 /*
 To do:
-- Add throws
+- Guard + and - operator
 */
 
 #include "DS/Date.h"
@@ -130,6 +130,22 @@ std::ostream &operator<<(std::ostream &fout, const Date &A)
 inline int Date::day() const { return D; }
 inline int Date::month() const { return M; }
 inline int Date::year() const { return Y; }
+
+/* Arithmetic */
+Date Date::operator+(int k)
+{
+    return num2date(date2num(*this) + k);
+}
+
+Date Date::operator-(int k)
+{
+    return num2date(date2num(*this) - k);
+}
+
+int Date::operator-(const Date &other)
+{
+    return date2num(*this) - date2num(other);
+}
 
 int Date::test()
 {
