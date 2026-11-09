@@ -6,58 +6,90 @@ To do:
 #include "DS/Date.h"
 #include <iostream>
 #include <string>
+#include <limits>
 
-inline bool Date::isLeap(const Date &A)
+/* Helper functions */
+
+inline bool Date::isLeap(int Y)
 {
-    return A.Y % 400 == 0 || (A.Y % 4 == 0 && A.Y % 100 != 0);
+    return Y % 400 == 0 || (Y % 4 == 0 && Y % 100 != 0);
 }
 
-inline int Date::monthLen(int M, const Date &A)
+inline int Date::monthLen(int M, int Y)
 {
-    if (M==2 && isLeap(A)) return 29;
+    if (M==2 && isLeap(Y)) return 29;
     return MONTH_LEN[M-1];
 }
 
-bool Date::validateDate(const Date &A)
+bool Date::validateTuple(int _day, int _month, int _year)
 {
-    if (A.Y < MIN_YEAR || A.Y > MAX_YEAR) return false;
-    if (A.M < 1 || A.M > 12) return false;
-    int thisMonthLen = monthLen(A.M, A);
-    if (A.D < 1 || A.D > thisMonthLen) return false;
+    if (_year < MIN_YEAR || _year > MAX_YEAR) return false;
+    if (_month < 1 || _month > 12) return false;
+    if (_day < 1 || _day > monthLen(_month, _year)) return false;
     return true;
 }
 
-Date::Date(int _day, int _month, int _year): D(_day), M(_month), Y(_year) 
+bool Date::validateString(const std::string &X, int &_day, int &_month, int &_year)
 {
-    if (!validateDate(*this))
-        throw std::invalid_argument("Invalid Date");
+    int dash1 = -1, dash2 = -1;
+    for (int i = 0; i<(int)X.size(); i++) /* Search the string for <=2 dash and deny any other non digits */
+    {
+        if (X[i]=='-')
+        {
+            if (dash1==-1) dash1 = i;
+            else if (dash2==-1) dash2 = i;
+            else return false;
+        }
+        else if (X[i]<'0' || X[i]>'9') return false;
+    }
+    if (dash2==-1) return false; /* <2 dash */
+    if (dash1>2 || (dash2-dash1-1)>2 || ((int)X.size()-dash2-1)>4) return false; /* Deny if digits are too long */
+
+    /* Extract digits */
+    for (int i = 0; i<dash1; i++) _day = _day*10 + (X[i]-'0');
+    for (int i = dash1+1; i<dash2; i++) _month = _month*10 + (X[i]-'0');
+    for (int i = dash2+1; i<(int)X.size(); i++) _year = _year*10 + (X[i]-'0');
+    return true;
+}
+
+/* Constructors */
+
+Date::Date(int _day, int _month, int _year)
+{  
+    if (!validateTuple(_day, _month, _year))
+        throw std::invalid_argument("Invalid Date (value)");
+    D = _day; M = _month; Y = _year;
 }
 
 Date::Date(const std::string &x) /* Format dd-mm-yyyy */
 {
-    int dash1 = -1, dash2 = -1;
-    for (int i = 0; i<(int)x.size(); i++) 
+    int _day{}, _month{}, _year{};
+    if (!validateString(x, _day, _month, _year))
+        throw std::invalid_argument("Invalid Date (format)");
+    if (!validateTuple(_day, _month, _year))
+        throw std::invalid_argument("Invalid Date (value)");
+    D = _day; M = _month; Y = _year;
+}
+
+std::istream &operator>>(std::istream &fin, Date &A)
+{
+    std::string UserInput;
+    
+    if (fin >> UserInput)
     {
-        if (x[i]=='-')
-        {
-            if (dash1==-1) dash1 = i;
-            else if (dash2==-1) dash2 = i;
-            else throw std::invalid_argument("Invalid Date formatting");
+        try{
+            A = Date(UserInput);
         }
-        else if (x[i]<'0' || x[i]>'9') throw std::invalid_argument("Invalid Date formatting");
+        catch (const std::exception& e) {
+            std::cerr << "Caught an exception: " << e.what() << std::endl;
+            fin.setstate(std::ios_base::failbit);
+        }
     }
-    if (dash2==-1) throw std::invalid_argument("Invalid Date formatting");
-    if (dash1>2 || (dash2-dash1-1)>2 || ((int)x.size()-dash2-1)>4) throw std::invalid_argument("Invalid Date formatting");
-    for (int i = 0; i<dash1; i++) D = D*10 + (x[i]-'0');
-    for (int i = dash1+1; i<dash2; i++) M = M*10 + (x[i]-'0');
-    for (int i = dash2+1; i<(int)x.size(); i++) Y = Y*10 + (x[i]-'0');
-    if (!validateDate(*this))
-        throw std::invalid_argument("Invalid Date");
+    return fin;
 }
 
 
 int Date::test()
 {
-    std::cout << validateDate(*this) << '\n';
     return 0;
 }

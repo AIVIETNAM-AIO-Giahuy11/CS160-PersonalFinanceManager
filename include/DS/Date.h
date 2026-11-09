@@ -11,14 +11,19 @@ private:
     static constexpr int MIN_YEAR = 1970, MAX_YEAR = 3000;
     static constexpr int MONTH_LEN[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    int D{}, M{}, Y{};
+    int D, M, Y;
 
-    inline bool isLeap(const Date &A);
-    inline int monthLen(int M, const Date &A);
-    bool validateDate(const Date &A);
+    inline bool isLeap(int Y);
+    inline int monthLen(int M, int Y);
+    bool validateTuple(int _day, int _month, int _year);
+    bool validateString(const std::string &X, int &_day, int &_month, int &_year);
+
 public:
-    Date(int _day = 1, int _month = 1, int _year = 1970);
+    Date(): D(1), M(1), Y(1970) {}
+    Date(int _day, int _month, int _year);
     Date(const std::string &x);
+
+    friend std::istream &operator>>(std::istream &fin, Date &A);
 
     int test();
     
