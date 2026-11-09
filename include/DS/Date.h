@@ -5,13 +5,14 @@
 */
 #pragma once
 #include <string>
+#include <compare>
 
 class Date{
 private:
     static constexpr int MIN_YEAR = 1970, MAX_YEAR = 3000;
     static constexpr int MONTH_LEN[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    int D, M, Y;
+    int Y, M, D; /* MUST BE IN THIS ORDER FOR <=> OVERLOAD */
 
     inline bool isLeap(int Y);
     inline int monthLen(int M, int Y);
@@ -25,6 +26,8 @@ public:
 
     friend std::istream &operator>>(std::istream &fin, Date &A);
     friend std::ostream &operator<<(std::ostream &fout, const Date &A);
+
+    auto operator<=>(const Date&) const = default;
 
     int test();
     
