@@ -19,6 +19,8 @@ private:
     bool validateTuple(int _day, int _month, int _year);
     bool validateString(const std::string &X, int &_day, int &_month, int &_year);
 
+    int date2num(const Date &A);
+    Date num2date(int N);
 public:
     Date(): D(1), M(1), Y(1970) {}
     Date(int _day, int _month, int _year);

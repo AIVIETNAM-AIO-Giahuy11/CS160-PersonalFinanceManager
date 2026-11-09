@@ -52,6 +52,36 @@ bool Date::validateString(const std::string &X, int &_day, int &_month, int &_ye
     return true;
 }
 
+/* Date to #day since march 1st 0000 conversion */
+/* Credit: Howard Hinnant, other */
+int Date::date2num(const Date &A)
+{
+    int d = A.day()-1;
+    int m = (A.month()<3? A.month()+9 : A.month()-3);
+    int y = (A.month()<3? A.year()-1 : A.year());
+    return y*365 + y/4 - y/100 + y/400 + (153*m+2)/5 + d;
+}
+
+Date Date::num2date(int N)
+{
+    int t;
+    int y = 400*(N/146097); N%=146097;
+
+    t = std::min(N/36524, 3);
+    y+= 100*t; N-= 36524 * t;
+
+    y+= 4*(N/1461); N%=1461;
+
+    t = std::min(N/365, 3);
+    y+= t; N-=365 * t;
+
+    int m = (5*N+2)/153;
+    int d = N - (153*m+2)/5;
+    y+= (m>=10); m = (m>=10? m-9 : m+3); d++;
+    return Date(d, m, y);
+}
+/*--------------------------------------------*/
+
 /* Constructors */
 
 Date::Date(int _day, int _month, int _year)
@@ -103,5 +133,7 @@ inline int Date::year() const { return Y; }
 
 int Date::test()
 {
+    std::cout << date2num(*this) << '\n';
+    std::cout << num2date(date2num(*this)) << '\n';
     return 0;
 }
