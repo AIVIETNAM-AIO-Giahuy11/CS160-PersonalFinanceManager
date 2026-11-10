@@ -1,5 +1,6 @@
 /*
 To do:
+- Change today() to use <ctime> for cross platform compatibility
 
 */
 
@@ -113,7 +114,6 @@ std::istream &operator>>(std::istream &fin, Date &A)
             A = Date(UserInput);
         }
         catch (const std::exception& e) {
-            std::cerr << "Caught an exception: " << e.what() << std::endl;
             fin.setstate(std::ios_base::failbit);
         }
     }
@@ -127,20 +127,36 @@ std::ostream &operator<<(std::ostream &fout, const Date &A)
 }
 
 /* Arithmetic */
-Date Date::operator+(int k)
+Date &Date::operator+=(int k)
 {
-    int t = date2num(*this) + k;
+    int t = (date2num(*this) + k);
     if (t<MIN_DAYNUM || t>MAX_DAYNUM)
         throw std::out_of_range("OOB Date operation");
-    return num2date(t);
+    *this = num2date(t);
+    return *this;
 }
 
-Date Date::operator-(int k)
+Date &Date::operator-=(int k)
 {
-    int t = date2num(*this) - k;
-    if (t<MIN_DAYNUM || t>MAX_DAYNUM)
-        throw std::out_of_range("OOB Date operation");
-    return num2date(t);
+    *this+=(-k);
+    return *this;
+}
+
+Date operator+(Date A, int k) { A+=k; return A; }
+Date operator-(Date A, int k) { A-=k; return A; }
+Date &Date::operator++() { *this+=1; return *this; }
+Date &Date::operator--() { *this-=1; return *this; }
+Date Date::operator++(int)
+{
+    Date tmp = *this;
+    ++*this;
+    return tmp;
+}
+Date Date::operator--(int)
+{
+    Date tmp = *this;
+    --*this;
+    return tmp;
 }
 
 int Date::operator-(const Date &other)

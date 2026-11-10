@@ -36,12 +36,18 @@ public:
     int month() const { return M; }
     int year() const  { return Y; }
 
-    Date operator+(int k);
-    Date operator-(int k);
+    Date &operator+=(int k);
+    Date &operator-=(int k);
+    Date &operator++();
+    Date &operator--();
+    Date operator++(int);
+    Date operator--(int);
     int operator-(const Date &other);
 
     static Date today();
 
     int test();
-    
 };
+
+Date operator+(Date A, int k);
+Date operator-(Date A, int k);
