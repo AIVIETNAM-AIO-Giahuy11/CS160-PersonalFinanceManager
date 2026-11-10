@@ -15,8 +15,8 @@ private:
 
     int Y, M, D; /* MUST BE IN THIS ORDER FOR <=> OVERLOAD */
 
-    inline bool isLeap(int Y);
-    inline int monthLen(int M, int Y);
+    bool isLeap(int Y);
+    int monthLen(int M, int Y);
     bool validateTuple(int _day, int _month, int _year);
     bool validateString(const std::string &X, int &_day, int &_month, int &_year);
 
@@ -32,9 +32,9 @@ public:
 
     auto operator<=>(const Date&) const = default;
 
-    inline int day() const;
-    inline int month() const;
-    inline int year() const;
+    int day() const   { return D; }
+    int month() const { return M; }
+    int year() const  { return Y; }
 
     Date operator+(int k);
     Date operator-(int k);

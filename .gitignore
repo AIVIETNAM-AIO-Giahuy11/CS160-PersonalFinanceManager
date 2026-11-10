@@ -10,3 +10,6 @@ debug/
 # IDE / editor files
 .vscode/
 .vs/
+
+# Testing  directory
+src/test/

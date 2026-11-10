@@ -10,12 +10,12 @@ To do:
 
 /* Helper functions */
 
-inline bool Date::isLeap(int Y)
+bool Date::isLeap(int Y)
 {
     return Y % 400 == 0 || (Y % 4 == 0 && Y % 100 != 0);
 }
 
-inline int Date::monthLen(int M, int Y)
+int Date::monthLen(int M, int Y)
 {
     if (M==2 && isLeap(Y)) return 29;
     return MONTH_LEN[M-1];
@@ -126,11 +126,6 @@ std::ostream &operator<<(std::ostream &fout, const Date &A)
     return fout;
 }
 
-/* Getters */
-inline int Date::day() const { return D; }
-inline int Date::month() const { return M; }
-inline int Date::year() const { return Y; }
-
 /* Arithmetic */
 Date Date::operator+(int k)
 {
@@ -162,11 +157,4 @@ Date Date::today()
     // Floor the local time to days precision
     const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(local_now)};
     return Date(static_cast<unsigned>(ymd.day()), static_cast<unsigned>(ymd.month()), static_cast<int>(ymd.year()));
-}
-
-/*--------------------------------------------*/
-int Date::test()
-{
-    std::cout << date2num(*this) << '\n';
-    return 0;
 }
