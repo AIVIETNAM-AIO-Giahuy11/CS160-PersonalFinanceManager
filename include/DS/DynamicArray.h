@@ -27,6 +27,9 @@
     insert(idx,obj) : insert obj to the left of the previous a[idx] (obj is the new arr[idx])
 */
 #pragma once
+#include <algorithm>
+#include <stdexcept>
+
 template<typename type>
 class DynamicArray{
 private:
@@ -118,11 +121,11 @@ public:
         return *this;
     }
 
-    inline size_t size() const {return _end-_begin;}
-    inline size_t capacity() const {return block_end-_begin;}
-    inline type* begin() const {return _begin;}
-    inline type* end() const {return _end;}
-    inline bool empty() const {return _begin==_end;}
+    size_t size() const {return _end-_begin;}
+    size_t capacity() const {return block_end-_begin;}
+    type* begin() const {return _begin;}
+    type* end() const {return _end;}
+    bool empty() const {return _begin==_end;}
     
     type& back()
     {
