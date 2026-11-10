@@ -1,13 +1,12 @@
 /*
 To do:
-- Change today() to use <ctime> for cross platform compatibility
 
 */
 
 #include "DS/Date.h"
 #include <iostream>
 #include <string>
-#include <chrono>
+#include <ctime>
 
 /* Helper functions */
 
@@ -164,13 +163,15 @@ int Date::operator-(const Date &other)
     return date2num(*this) - date2num(other);
 }
 
-/* Helper function to get today's date using <chrono> */
+/* Helper function to get today's date using <ctime> */
 Date Date::today()
 {
-    const auto now = std::chrono::system_clock::now();
-    // Convert UTC system time to local time zone time
-    const auto local_now = std::chrono::current_zone()->to_local(now);
-    // Floor the local time to days precision
-    const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(local_now)};
-    return Date(static_cast<unsigned>(ymd.day()), static_cast<unsigned>(ymd.month()), static_cast<int>(ymd.year()));
+    std::time_t t = std::time(nullptr);
+    std::tm tm{};
+#ifdef _WIN32
+    localtime_s(&tm, &t);      // MSVC and MinGW-w64 (note: argument order differs from C11)
+#else
+    localtime_r(&t, &tm);      // POSIX, thread-safe
+#endif
+    return Date(tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 }
