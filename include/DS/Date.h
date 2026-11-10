@@ -39,6 +39,8 @@ public:
     Date operator-(int k);
     int operator-(const Date &other);
 
+    static Date today();
+
     int test();
     
 };

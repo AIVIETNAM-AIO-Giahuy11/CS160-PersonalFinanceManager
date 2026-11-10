@@ -6,7 +6,7 @@ To do:
 #include "DS/Date.h"
 #include <iostream>
 #include <string>
-#include <limits>
+#include <chrono>
 
 /* Helper functions */
 
@@ -147,6 +147,18 @@ int Date::operator-(const Date &other)
     return date2num(*this) - date2num(other);
 }
 
+/* Helper function to get today's date using <chrono> */
+Date Date::today()
+{
+    const auto now = std::chrono::system_clock::now();
+    // Convert UTC system time to local time zone time
+    const auto local_now = std::chrono::current_zone()->to_local(now);
+    // Floor the local time to days precision
+    const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(local_now)};
+    return Date(static_cast<unsigned>(ymd.day()), static_cast<unsigned>(ymd.month()), static_cast<int>(ymd.year()));
+}
+
+/*--------------------------------------------*/
 int Date::test()
 {
     std::cout << date2num(*this) << '\n';
