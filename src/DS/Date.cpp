@@ -1,11 +1,6 @@
-/*
-To do:
-
-*/
-
 #include "DS/Date.h"
 #include <iostream>
-#include <string>
+#include <stdexcept>
 #include <ctime>
 
 /* Helper functions */
@@ -158,7 +153,7 @@ Date Date::operator--(int)
     return tmp;
 }
 
-int Date::operator-(const Date &other)
+int Date::operator-(const Date &other) const
 {
     return date2num(*this) - date2num(other);
 }

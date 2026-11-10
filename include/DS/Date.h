@@ -1,11 +1,28 @@
 /* Created on 08/11/26 */
 /*
-# Supported functions:
+Custom class for storing date in dd-mm-yyyy format.
+Valid date range from 01-01-1970 to 31-12-3000
 
+# Supported functions:
+## Constructors:
+    Date() : Default to 01-01-1970
+    Date(int d, int m, int y) : Construct date with integer argument, throw on invalid date
+    Date(string formatted_str) : Construct date with string argument (dd-mm-yyyy, 0 paddings are optional), throw on invalid date/format
+    Copy, move, assignment, swap operator are implicitly generated
+## Stream extractor:
+    >> : Reads a string argument, handles invalid data and setting stream state. Invalid reads leave Date unchanged
+    << : Output dd-mm-yyyy, without 0 padding
+## Comparator:
+    6 standard comparison operators supported through default spaceship operator
+## Date arithmetic:
+    With integer day count:
+        +=, -=, +, -, ++, -- (prefix/postfix) supported, throw on out of bound results
+    Date difference - : return day count between 2 given date
+## Utility:
+    today() : Get system's date using <ctime>
 */
 #pragma once
 #include <string>
-#include <compare>
 
 class Date{
 private:
@@ -15,15 +32,15 @@ private:
 
     int Y, M, D; /* MUST BE IN THIS ORDER FOR <=> OVERLOAD */
 
-    bool isLeap(int Y);
-    int monthLen(int M, int Y);
-    bool validateTuple(int _day, int _month, int _year);
-    bool validateString(const std::string &X, int &_day, int &_month, int &_year);
+    static bool isLeap(int Y);
+    static int monthLen(int M, int Y);
+    static bool validateTuple(int _day, int _month, int _year);
+    static bool validateString(const std::string &X, int &_day, int &_month, int &_year);
 
-    int date2num(const Date &A);
-    Date num2date(int N);
+    static int date2num(const Date &A);
+    static Date num2date(int N);
 public:
-    Date(): D(1), M(1), Y(1970) {}
+    Date(): Y(MIN_YEAR), M(1), D(1) {}
     Date(int _day, int _month, int _year);
     Date(const std::string &x);
 
@@ -42,11 +59,9 @@ public:
     Date &operator--();
     Date operator++(int);
     Date operator--(int);
-    int operator-(const Date &other);
+    int operator-(const Date &other) const;
 
     static Date today();
-
-    int test();
 };
 
 Date operator+(Date A, int k);
