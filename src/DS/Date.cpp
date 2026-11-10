@@ -1,6 +1,6 @@
 /*
 To do:
-- Guard + and - operator
+
 */
 
 #include "DS/Date.h"
@@ -134,12 +134,18 @@ inline int Date::year() const { return Y; }
 /* Arithmetic */
 Date Date::operator+(int k)
 {
-    return num2date(date2num(*this) + k);
+    int t = date2num(*this) + k;
+    if (t<MIN_DAYNUM || t>MAX_DAYNUM)
+        throw std::out_of_range("OOB Date operation");
+    return num2date(t);
 }
 
 Date Date::operator-(int k)
 {
-    return num2date(date2num(*this) - k);
+    int t = date2num(*this) - k;
+    if (t<MIN_DAYNUM || t>MAX_DAYNUM)
+        throw std::out_of_range("OOB Date operation");
+    return num2date(t);
 }
 
 int Date::operator-(const Date &other)
@@ -162,6 +168,5 @@ Date Date::today()
 int Date::test()
 {
     std::cout << date2num(*this) << '\n';
-    std::cout << num2date(date2num(*this)) << '\n';
     return 0;
 }
