@@ -22,13 +22,12 @@ private:
     static constexpr long long MAX_AMOUNT = 1'000'000'000'000'000;
 
     static bool validateAmount(long long m);
-    static bool validateSuffixFormat(const std::string &x, long long &M);
     static bool validateFormat(const std::string &x, long long &M);
 
     long long M;
 public:
     Currency(): M(0) {}
-    Currency(long long _M);
+    explicit Currency(long long _M);
     Currency(const std::string &x);
 
     auto operator<=>(const Currency&) const = default;
@@ -36,4 +35,5 @@ public:
     friend std::istream &operator>>(std::istream &fin, Currency &A);
     friend std::ostream &operator<<(std::ostream &fout, const Currency &A);
 
+    
 };
