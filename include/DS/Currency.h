@@ -35,5 +35,11 @@ public:
     friend std::istream &operator>>(std::istream &fin, Currency &A);
     friend std::ostream &operator<<(std::ostream &fout, const Currency &A);
 
-    
+    Currency &operator+=(const Currency &other);
+    Currency &operator-=(const Currency &other);
+    Currency &operator*=(long long k);
 };
+
+Currency operator+(Currency A, const Currency &B);
+Currency operator-(Currency A, const Currency &B);
+Currency operator*(Currency A, long long k);

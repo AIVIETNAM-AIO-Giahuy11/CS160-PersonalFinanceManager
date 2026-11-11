@@ -122,3 +122,34 @@ std::ostream &operator<<(std::ostream &fout, const Currency &A)
     fout << ret << Currency::SUFFIX;
     return fout;
 }
+
+/* Arithmetic */
+Currency &Currency::operator+=(const Currency &other)
+{
+    if (std::abs(this->M+other.M) > MAX_AMOUNT)
+        throw std::out_of_range("OOB Currency operation");
+    this->M+= other.M;
+    return *this;
+}
+
+Currency &Currency::operator-=(const Currency &other)
+{
+    if (std::abs(this->M-other.M) > MAX_AMOUNT)
+        throw std::out_of_range("OOB Currency operation");
+    this->M-= other.M;
+    return *this;
+}
+
+Currency &Currency::operator*=(long long k)
+{
+    if (k<0)
+        throw std::out_of_range("OOB Currency operation");
+    if (std::abs(this->M) > MAX_AMOUNT/k)
+        throw std::out_of_range("OOB Currency operation");
+    this->M*=k;
+    return *this;
+}
+
+Currency operator+(Currency A, const Currency &B) { A+=B; return A; }
+Currency operator-(Currency A, const Currency &B) { A-=B; return A;}
+Currency operator*(Currency A, long long k) { A*=k; return A;}
