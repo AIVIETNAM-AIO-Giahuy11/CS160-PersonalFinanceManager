@@ -41,7 +41,7 @@ private:
     static Date num2date(int N);
 public:
     Date(): Y(MIN_YEAR), M(1), D(1) {}
-    Date(int _day, int _month, int _year);
+    explicit Date(int _day, int _month, int _year);
     Date(const std::string &x);
 
     friend std::istream &operator>>(std::istream &fin, Date &A);
