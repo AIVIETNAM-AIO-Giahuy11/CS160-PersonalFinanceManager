@@ -144,7 +144,7 @@ Currency &Currency::operator*=(long long k)
 {
     if (k<0)
         throw std::out_of_range("OOB Currency operation");
-    if (std::abs(this->M) > MAX_AMOUNT/k)
+    if (k>0 && std::abs(this->M) > MAX_AMOUNT/k)
         throw std::out_of_range("OOB Currency operation");
     this->M*=k;
     return *this;
