@@ -123,9 +123,10 @@ std::ostream &operator<<(std::ostream &fout, const Date &A)
 /* Arithmetic */
 Date &Date::operator+=(int k)
 {
-    int t = (date2num(*this) + k);
-    if (t<MIN_DAYNUM || t>MAX_DAYNUM)
+    int t = date2num(*this);
+    if (k<MIN_DAYNUM-t || k>MAX_DAYNUM-t)
         throw std::out_of_range("OOB Date operation");
+    t+=k;
     *this = num2date(t);
     return *this;
 }
