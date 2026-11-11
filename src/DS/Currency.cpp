@@ -44,6 +44,7 @@ long long getMul(const std::string &x)
 
 bool Currency::validateFormat(const std::string &x, long long &M)
 {
+    if (x.empty()) return false;
     int sign = getSign(x);
     if (sign==0) return false;
     long long tmp = 0, mul = getMul(x);
@@ -67,7 +68,7 @@ bool Currency::validateFormat(const std::string &x, long long &M)
 /* Constructors */
 Currency::Currency(long long _M)
 {
-    if (!validateAmount(M))
+    if (!validateAmount(_M))
         throw std::invalid_argument("Invalid currency (value)");
     M = _M;
 }
@@ -150,7 +151,7 @@ Currency &Currency::operator*=(long long k)
     return *this;
 }
 
-Currency Currency::operator-()
+Currency Currency::operator-() const
 {
     return Currency(-M);
 }

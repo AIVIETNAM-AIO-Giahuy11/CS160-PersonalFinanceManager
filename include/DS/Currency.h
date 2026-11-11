@@ -40,7 +40,7 @@ private:
     long long M;
 public:
     Currency(): M(0) {}
-    explicit Currency(long long _M);
+    Currency(long long _M);
     Currency(const std::string &x);
 
     auto operator<=>(const Currency&) const = default;
@@ -51,7 +51,7 @@ public:
     Currency &operator+=(const Currency &other);
     Currency &operator-=(const Currency &other);
     Currency &operator*=(long long k);
-    Currency operator-();
+    Currency operator-() const;
 
 };
 
