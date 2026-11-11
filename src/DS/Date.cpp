@@ -133,7 +133,11 @@ Date &Date::operator+=(int k)
 
 Date &Date::operator-=(int k)
 {
-    *this+=(-k);
+    int t = date2num(*this);
+    if (k>t-MIN_DAYNUM || k<t-MAX_DAYNUM)
+        throw std::out_of_range("OOB Date operation");
+    t-=k;
+    *this = num2date(t);
     return *this;
 }
 
