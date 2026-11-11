@@ -51,6 +51,8 @@ public:
     Currency &operator+=(const Currency &other);
     Currency &operator-=(const Currency &other);
     Currency &operator*=(long long k);
+    Currency operator-();
+
 };
 
 Currency operator+(Currency A, const Currency &B);

@@ -150,6 +150,11 @@ Currency &Currency::operator*=(long long k)
     return *this;
 }
 
+Currency Currency::operator-()
+{
+    return Currency(-M);
+}
+
 Currency operator+(Currency A, const Currency &B) { A+=B; return A; }
 Currency operator-(Currency A, const Currency &B) { A-=B; return A;}
 Currency operator*(Currency A, long long k) { A*=k; return A;}
