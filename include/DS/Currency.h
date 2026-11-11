@@ -13,6 +13,7 @@ Input format:
 #pragma once
 #include <string>
 #include <iostream>
+#include <compare>
 
 class Currency{
 private:
@@ -29,6 +30,8 @@ public:
     Currency(): M(0) {}
     Currency(long long _M);
     Currency(const std::string &x);
+
+    auto operator<=>(const Currency&) const = default;
 
     friend std::istream &operator>>(std::istream &fin, Currency &A);
     friend std::ostream &operator<<(std::ostream &fout, const Currency &A);
