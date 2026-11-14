@@ -1,8 +1,12 @@
 #include "DS/Currency.h"
-#include <stdexcept>
-#include <utility>
-#include <string>
 #include <algorithm>
+#include <istream>
+#include <ostream>
+#include <ios>
+#include <cstdlib>
+#include <exception>
+#include <stdexcept>
+#include <string>
 
 /* Helper functions */
 bool Currency::validateAmount(long long m)

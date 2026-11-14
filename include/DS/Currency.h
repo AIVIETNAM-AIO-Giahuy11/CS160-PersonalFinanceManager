@@ -25,7 +25,7 @@ Input format:
 
 #pragma once
 #include <string>
-#include <iostream>
+#include <iosfwd>
 #include <compare>
 
 class Currency{
