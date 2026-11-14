@@ -23,6 +23,8 @@ Valid date range from 01-01-1970 to 31-12-3000
 */
 #pragma once
 #include <string>
+#include <compare> // for operator<=>
+#include <iosfwd>
 
 class Date{
 private:

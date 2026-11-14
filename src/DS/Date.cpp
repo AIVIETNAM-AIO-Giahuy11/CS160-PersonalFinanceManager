@@ -1,7 +1,11 @@
 #include "DS/Date.h"
-#include <iostream>
+#include <istream>
+#include <ostream>
+#include <exception>
 #include <stdexcept>
 #include <ctime>
+#include <algorithm>
+#include <string>
 
 /* Helper functions */
 
