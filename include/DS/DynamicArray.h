@@ -28,7 +28,11 @@
 */
 #pragma once
 #include <algorithm>
+#include <cstddef>
+#include <initializer_list>
+#include <new>
 #include <stdexcept>
+#include <utility>
 
 template<typename type>
 class DynamicArray{
