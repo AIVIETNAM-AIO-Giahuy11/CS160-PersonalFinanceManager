@@ -1,13 +1,13 @@
 #pragma once
 
 // Categories
-#include "Wallet.h"
-#include "IncomeSource.h"
-#include "ExpenseCategory.h"
+#include "domain/Wallet.h"
+#include "domain/IncomeSource.h"
+#include "domain/ExpenseCategory.h"
 
 // Income/Expense
-#include "Income.h"
-#include "Expense.h"
+#include "domain/Income.h"
+#include "domain/Expense.h"
 
 
 // Recurring Income/Expense
