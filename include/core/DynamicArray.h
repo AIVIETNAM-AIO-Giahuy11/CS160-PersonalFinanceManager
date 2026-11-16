@@ -127,9 +127,10 @@ public:
 
     size_t size() const {return _end-_begin;}
     size_t capacity() const {return block_end-_begin;}
-    type* begin() const {return _begin;}
-    type* end() const {return _end;}
     bool empty() const {return _begin==_end;}
+
+    type* begin() {return _begin;}
+    type* end() {return _end;}
     
     type& back()
     {
@@ -148,6 +149,31 @@ public:
         if (idx>=size()) throw std::out_of_range("OOB: Index out of bound");
         return *(_begin+idx);
     }
+
+    // const version of iterator and getter
+    const type* begin() const {return _begin;}
+    const type* end() const {return _end;}
+
+    const type& back() const
+    {
+        if (empty()) throw std::out_of_range("Attempting back() on empty state");
+        return *(_end-1);
+    }
+
+    const type& front() const
+    {
+        if (empty()) throw std::out_of_range("Attempting front() on empty state");
+        return *_begin;
+    }
+
+    const type& operator[](size_t idx) const
+    {
+        if (idx>=size()) throw std::out_of_range("OOB: Index out of bound");
+        return *(_begin+idx);
+    }
+
+
+    //-------------------------------
 
     void push_back(type &&obj) /* Temporary (rvalue) */
     {
