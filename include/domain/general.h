@@ -6,7 +6,8 @@
 #include "ExpenseCategory.h"
 
 // Income/Expense
-
+#include "Income.h"
+#include "Expense.h"
 
 
 // Recurring Income/Expense
