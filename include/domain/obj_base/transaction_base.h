@@ -27,16 +27,15 @@ Constructor order: date - amount - sourceid - walletid - desc
 class _transaction_base{
 private:
     int id = NULL_ID;
+    void setId(int _id) { id = _id; }
 
     Date date;
     Currency amount;
     int sourceId;
     int walletId;
     std::string description;
-
-
-    void setId(int _id) { id = _id; }
 public:
+    _transaction_base() {}
     _transaction_base(const Date &_date, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
     {
         date = _date;

@@ -18,11 +18,13 @@ Base object for (id-name) data, such as wallet, expenseCategory, incomeSource
 class _category_base{
 private:
     int id = NULL_ID;
-    std::string name;
-
     void setId(int _id) { id = _id; }
+
+    std::string name;
 public:
-    _category_base(const std::string &_name = "Empty"): name(_name) {}
+    _category_base() {}
+    _category_base(const std::string &_name): name(_name) {}
+    
     int Id() const { return id; }
     const std::string &Name() const { return name; }
 
