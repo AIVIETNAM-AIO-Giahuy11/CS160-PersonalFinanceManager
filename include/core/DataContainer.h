@@ -18,6 +18,7 @@ Object condition:
     getEntry(int id) : get object from Id, throwing on invalid Id
     eraseEntry(int id) : erase object from Id, throwing on invalid Id
     operator<<(DynamicArray LHS, DataContainer RHS) : extract internal container to a DynamicArray (useful for gui)
+    overwriteEntry(int pos, Data newObject) : overwrite entry at position pos with newObject value, (Id is preserved)
 */
 
 #pragma once
@@ -75,6 +76,14 @@ public:
         if (t==-1)
             throw std::invalid_argument("Id not found, ensure Object is in DataContainer before getEntry()");
         return this->operator[](t);
+    }
+
+    void overwriteEntry(size_t pos, const Data &new_data)
+    {
+        Data &og_data = (*this)[pos];
+        int old_id = og_data.Id();
+        og_data = new_data;
+        og_data.setId(old_id);
     }
 
     void eraseEntry(int id) // ensure id is valid first
