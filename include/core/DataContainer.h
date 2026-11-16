@@ -6,7 +6,7 @@ template<typename Data>
 class DataContainer{
 private:
     int idHead = 0;
-    DynamicArray<Data> container;
+    DynamicArray<Data> container{};
 
 public:
     bool empty() const { return container.empty(); }
@@ -51,4 +51,16 @@ public:
         return this->operator[](t);
     }
 
+    void eraseEntry(int id) // ensure id is valid first
+    {
+        int t = findIndex(id);
+        if (t==-1)
+            throw std::invalid_argument("Id not found, ensure Object is in DataContainer before eraseEntry()");
+        container.erase(t);
+    }
+
+    friend void operator<<(DynamicArray<Data> &LHS, const DataContainer<Data> &RHS)
+    {
+        LHS = RHS.container;
+    }
 };

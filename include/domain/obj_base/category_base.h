@@ -22,7 +22,7 @@ private:
 
     void setId(int _id) { id = _id; }
 public:
-    _category_base(const std::string &_name = ""): name(_name) {}
+    _category_base(const std::string &_name = "Empty"): name(_name) {}
     int Id() const { return id; }
     const std::string &Name() const { return name; }
 
