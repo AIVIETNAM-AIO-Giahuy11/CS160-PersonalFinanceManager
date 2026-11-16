@@ -1,6 +1,24 @@
+/*
+Project's data container using an internal monotonic Id system and binary search for Id lookup
+Object condition:
+    Private id field, always default constructed with NULL_ID
+    Private setId(int id) function
+    Include DataContainer as friend class
+
+# Supported functions:
+    findIndex(int id) : find index in internal array from Id
+    addEntry(Object) : insert Object
+    hasEntry(int id) : check if container has Id (useful for potentially deleted objects)
+    operator[](int pos) : get object from internal array's index
+    getEntry(int id) : get object from Id, throwing on invalid Id
+    eraseEntry(int id) : erase object from Id, throwing on invalid Id
+    operator<<(DynamicArray LHS, DataContainer RHS) : extract internal container to a DynamicArray (useful for gui)
+*/
 #pragma once
 #include "core/DynamicArray.h"
 #include <stdexcept>
+
+static constexpr int NULL_ID = -1;
 
 template<typename Data>
 class DataContainer{

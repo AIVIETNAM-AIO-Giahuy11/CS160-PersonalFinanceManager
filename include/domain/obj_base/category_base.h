@@ -8,7 +8,7 @@ Base object for (id-name) data, such as wallet, expenseCategory, incomeSource
 ## Setter:
     setName()
 
-- Note: Id is strictly set by DataContainer<> object's new entry function
+- Note: Id is strictly set by DataContainer<> object's addEntry()
 */
 
 #pragma once
@@ -17,7 +17,7 @@ Base object for (id-name) data, such as wallet, expenseCategory, incomeSource
 
 class _category_base{
 private:
-    int id = -1;
+    int id = NULL_ID;
     std::string name;
 
     void setId(int _id) { id = _id; }
