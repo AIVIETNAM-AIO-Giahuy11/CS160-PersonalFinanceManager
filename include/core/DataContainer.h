@@ -3,9 +3,14 @@ Project's data container using an internal monotonic Id system and binary search
 Object condition:
     Private id field, always default constructed with NULL_ID
     Private setId(int id) function
+    Public Id() function
     Include DataContainer as friend class
 
 # Supported functions:
+    empty() : check if container is empty
+    size() : get container's size
+    begin(), end() :  for range based for loop
+
     findIndex(int id) : find index in internal array from Id
     addEntry(Object) : insert Object
     hasEntry(int id) : check if container has Id (useful for potentially deleted objects)
@@ -14,6 +19,7 @@ Object condition:
     eraseEntry(int id) : erase object from Id, throwing on invalid Id
     operator<<(DynamicArray LHS, DataContainer RHS) : extract internal container to a DynamicArray (useful for gui)
 */
+
 #pragma once
 #include "core/DynamicArray.h"
 #include <stdexcept>
@@ -29,8 +35,10 @@ private:
 public:
     bool empty() const { return container.empty(); }
     size_t size()  const { return container.size(); }
-    Data* begin() const { return container.begin(); }
-    Data* end() const { return container.end(); }
+    Data* begin() { return container.begin(); }
+    Data* end() { return container.end(); }
+    const Data* begin() const { return container.begin(); }
+    const Data* end() const { return container.end(); }
 
     int findIndex(int target_id) const
     {
