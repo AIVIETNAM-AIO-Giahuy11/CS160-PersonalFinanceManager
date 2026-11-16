@@ -1,18 +1,32 @@
-#include "ui.h"
+#include "../../include/ui/ui.h"
 #include <iostream>
-#include <string>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // Terminal setup lives here so ui.cpp can focus on printing and input.
 // Set USE_COLOR to false to practice with plain text.
 const bool USE_COLOR = true;
 bool colorEnabled = false;
+#ifdef _WIN32
+DWORD savedMode = 0;
+#endif
 
 void startConsole() {
-    colorEnabled = true;
+#ifdef _WIN32
+    HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (USE_COLOR && GetConsoleMode(output, &savedMode)) {
+        // Enable ANSI color sequences on Windows.
+        colorEnabled = SetConsoleMode(output, savedMode | 0x0004) != 0;
+    }
+#else
+    colorEnabled = USE_COLOR && isatty(STDOUT_FILENO);
+#endif
 }
 
-// ink is a function to write text depent on role
-std :: string ink(const std::string& text, const std::string& role) {
+std::string ink(const std::string& text, const std::string& role) {
     if (!colorEnabled) return text;
     std::string color = "\x1b[38;2;227;235;244m";
     if (role == "accent") color = "\x1b[38;2;81;223;199m";
@@ -25,5 +39,8 @@ std :: string ink(const std::string& text, const std::string& role) {
 void finishConsole() {
     if (colorEnabled) {
         std::cout << "\x1b[0m";
+#ifdef _WIN32
+        SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), savedMode);
+#endif
     }
 }
