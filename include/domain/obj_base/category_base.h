@@ -1,12 +1,25 @@
+/*
+Base object for (id-name) data, such as wallet, expenseCategory, incomeSource
+
+# Supported functions:
+## Getter:
+    Id()
+    Name()
+## Setter:
+    setName()
+
+- Note: Id is strictly set by DataContainer<> object's new entry function
+*/
+
 #pragma once
 #include <string>
 
 class _category_base{
 private:
-    int id;
+    int id = -1;
     std::string name;
 public:
-    _category_base(int _id, const std::string &_name): id(_id), name(_name) {}
+    _category_base(const std::string &_name = ""): name(_name) {}
     int Id() const { return id; }
     const std::string &Name() const { return name; }
 
