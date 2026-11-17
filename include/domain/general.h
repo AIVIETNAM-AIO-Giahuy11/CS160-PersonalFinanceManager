@@ -9,5 +9,6 @@
 #include "domain/Income.h"
 #include "domain/Expense.h"
 
-
 // Recurring Income/Expense
+#include "domain/RecurringIncome.h"
+#include "domain/RecurringExpense.h"
