@@ -1,19 +1,27 @@
 /*
 Project's data container using an internal monotonic ID system and binary search for ID lookup
-Object must be wrapped with IdData<> for Id managing 
+<Data> must be wrapped with IdData<> for Id managing 
 
 # Supported functions:
     hasEntry(int id) : check if ID is in container
         ex: checking if a WalletId still exist
     
 ## Modify container: 
-    addEntry(Data) : append new Data to container
+    addEntry(<Data>) : append new <Data> to container
     eraseEntry(int id) : erase entry by ID, must ensure valid ID
-    writeEntry(int id, Data) : look up entry by ID and overwrite with new Data, must ensure valid ID
+    writeEntry(int id, <Data>) : look up entry by ID and overwrite with new <Data>, must ensure valid ID
 
 ## Read container:
-    getEntry(int id) : (READ ONLY) retrieve a const IdData<> instance, must ensure valid ID
-    operator<< : exporting container data to a DynamicArray of IdData<>
+    getEntry(int id) : (READ ONLY) retrieve a const <Data> instance, must ensure valid ID
+    begin(), end() : (READ ONLY) support range based for loop and iterator loop
+        ex: 
+            for (auto &i : container) <== looping as reference (&i) is recommended
+                cout << i.Id() << ' ' << i.Data.[Data getter function] << '\n'; 
+        ex2:
+            for (auto i = begin(); i!=end(); ++i) 
+                cout << (*i).Id() << ' ' << (*i).Data.[Data getter function] << '\n'; 
+
+    operator<< : export container data to a DynamicArray of IdData<Data>
         ex: DynamicArray<IdData<Wallet>> _DynamicArray << _WalletContainer;
 
 IdData Wrapper:
@@ -97,18 +105,16 @@ public:
     }
 
     /* Access data */
-    const IdData<Data> &getEntry(int id) const // ensure id is valid first
+    const Data &getEntry(int id) const // ensure id is valid first
     {
         int t = findIndex(id);
         if (t==-1)
             throw std::invalid_argument("Id not found, ensure Object is in DataContainer before getEntry()");
-        return container[t];
+        return container[t].Data;
     }
 
-        // begin(), end() : (READ ONLY) support range based for loop and iterator loop
-        // ex: for (auto &i : container) { cout << i.Id() << ' ' << i.Data.[Data getter function]; } <== looping as reference (&i) is recommended
-    // const IdData<Data> *begin() const { return container.begin(); }
-    // const IdData<Data> *end() const { return container.end(); }
+    const IdData<Data> *begin() const { return container.begin(); }
+    const IdData<Data> *end() const { return container.end(); }
 
 
     friend void operator<<(DynamicArray<IdData<Data>> &LHS, const DataContainer<Data> &RHS)
