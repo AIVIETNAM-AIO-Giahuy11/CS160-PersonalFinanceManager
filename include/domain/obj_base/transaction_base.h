@@ -4,7 +4,6 @@ Constructor order: date - amount - sourceid - walletid - desc
 
 # Supported functions:
 ## Getter:
-    Id()
     SouceId()
     WalletId()
     TransDate()
@@ -26,9 +25,6 @@ Constructor order: date - amount - sourceid - walletid - desc
 
 class _transaction_base{
 private:
-    int id = NULL_ID;
-    void setId(int _id) { id = _id; }
-
     Date date;
     Currency amount;
     int sourceId;
@@ -45,7 +41,6 @@ public:
         description = _desc;
     }
 
-    int Id() const { return id; }
     int SourceId() const { return sourceId; }
     int WalletId() const { return walletId; }
     const Date &TransDate() const { return date; }
@@ -57,6 +52,4 @@ public:
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
     void setDate(const Date &_date) { date = _date; }
-
-    template <typename T> friend class DataContainer;
 };
