@@ -1,13 +1,27 @@
 /*
-Project's data container using an internal monotonic Id system and binary search for Id lookup
-Object condition:
-    Private id field, always default constructed with NULL_ID
-    Private setId(int id) function
-    Public Id() function
-    Include DataContainer as friend class
+Project's data container using an internal monotonic ID system and binary search for ID lookup
+Object must be wrapped with IdData<> for Id managing 
 
 # Supported functions:
+    hasEntry(int id) : check if ID is in container
+        ex: checking if a WalletId still exist
     
+## Modify container: 
+    addEntry(Data) : append new Data to container
+    eraseEntry(int id) : erase entry by ID, must ensure valid ID
+    writeEntry(int id, Data) : look up entry by ID and overwrite with new Data, must ensure valid ID
+
+## Read container:
+    getEntry(int id) : (READ ONLY) retrieve a const IdData<> instance, must ensure valid ID
+    operator<< : exporting container data to a DynamicArray of IdData<>
+        ex: DynamicArray<IdData<Wallet>> _DynamicArray << _WalletContainer;
+
+IdData Wrapper:
+    .Id() : get internal Id     <== This prevent user from accidentally modifying id
+        ex: Income x; IdData<Wallet> y; 
+            x.setWalletId(y.Id());
+    .Data : access Data field
+        ex: IdData<Wallet> x; x.Data.setName("new name");
 */
 
 #pragma once
@@ -16,11 +30,19 @@ Object condition:
 
 static constexpr int NULL_ID = -1;
 
+template<typename T> class DataContainer; // Forward declaration for IdData
+
 template<typename _D>
-struct IdData{
-    int Id;
-    _D Data;
-    IdData(int _id = -1, const _D &_d = _D()): Id(_id), Data(_d) {}
+class IdData{
+private:
+    int id; // Private id
+public:
+    _D Data; // Public data
+
+    IdData(int _id = -1, const _D &_d = _D()): id(_id), Data(_d) {}
+    int Id() const { return id; }
+
+    friend class DataContainer<_D>; // Expose id access to DataContainer
 };
 
 template<typename Data>
@@ -36,33 +58,26 @@ private:
         while (l<r)
         {
             int mid = (l+r)>>1;
-            if (container[mid].Id < target_id)
+            if (container[mid].id < target_id)
                 l = mid+1;
-            else if (container[mid].Id > target_id)
+            else if (container[mid].id > target_id)
                 r = mid;
             else
                 return mid;
         }
         return -1;
     }
-    IdData<Data> &operator[](size_t pos)
-    {
-        return container[pos];
-    }
+    // const IdData<Data> &operator[](size_t pos) const
+    // {
+    //     return container[pos];
+    // }
 public:
     bool hasEntry(int id) const { return findIndex(id)!=-1; }
 
+    /* Modify data */
     void addEntry(const Data &A)
     {
         container.push_back(IdData<Data>(idHead++, A));
-    }
-
-    const IdData<Data> &getEntry(int id) const // ensure id is valid first
-    {
-        int t = findIndex(id);
-        if (t==-1)
-            throw std::invalid_argument("Id not found, ensure Object is in DataContainer before getEntry()");
-        return this->operator[](t);
     }
 
     void eraseEntry(int id) // ensure id is valid first
@@ -72,6 +87,29 @@ public:
             throw std::invalid_argument("Id not found, ensure Object is in DataContainer before eraseEntry()");
         container.erase(t);
     }
+
+    void writeEntry(int id, const Data &new_entry)
+    {
+        int t = findIndex(id);
+        if (t==-1)
+            throw std::invalid_argument("Id not found, ensure Object is in DataContainer before overwriteEntry()");
+        container[t].Data = new_entry;
+    }
+
+    /* Access data */
+    const IdData<Data> &getEntry(int id) const // ensure id is valid first
+    {
+        int t = findIndex(id);
+        if (t==-1)
+            throw std::invalid_argument("Id not found, ensure Object is in DataContainer before getEntry()");
+        return container[t];
+    }
+
+        // begin(), end() : (READ ONLY) support range based for loop and iterator loop
+        // ex: for (auto &i : container) { cout << i.Id() << ' ' << i.Data.[Data getter function]; } <== looping as reference (&i) is recommended
+    // const IdData<Data> *begin() const { return container.begin(); }
+    // const IdData<Data> *end() const { return container.end(); }
+
 
     friend void operator<<(DynamicArray<IdData<Data>> &LHS, const DataContainer<Data> &RHS)
     {
