@@ -19,7 +19,9 @@ Valid date range from 01-01-1970 to 31-12-3000
         +=, -=, +, -, ++, -- (prefix/postfix) supported, throw on out of bound results
     Date difference - : return day count between 2 given date
 ## Utility:
-    today() : Get system's date using <ctime>
+    Date::today() : Get system's date using <ctime>
+    Date::MAX_YEAR <== useful for indefinate transaction
+    Date::MIN_YEAR
 */
 #pragma once
 #include <string>
@@ -28,7 +30,6 @@ Valid date range from 01-01-1970 to 31-12-3000
 
 class Date{
 private:
-    static constexpr int MIN_YEAR = 1970, MAX_YEAR = 3000;
     static constexpr int MIN_DAYNUM = 719468, MAX_DAYNUM = 1096032;
     static constexpr int MONTH_LEN[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -42,6 +43,7 @@ private:
     static int date2num(const Date &A);
     static Date num2date(int N);
 public:
+    static constexpr int MIN_YEAR = 1970, MAX_YEAR = 3000;
     Date(): Y(MIN_YEAR), M(1), D(1) {}
     Date(int _day, int _month, int _year);
     Date(const std::string &x);

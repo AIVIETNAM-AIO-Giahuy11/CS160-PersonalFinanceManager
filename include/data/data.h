@@ -4,12 +4,15 @@
 
 namespace Data
 {
-    DataContainer<Wallet> wallet;
-    DataContainer<IncomeSource> incomeSource;
-    DataContainer<ExpenseCategory> expenseCategory;
-    DataContainer<Income> income;
-    DataContainer<Expense> expense;
-}
+    /* inline keyword for shared variable */
+    inline DataContainer<Wallet> wallet;
+    inline DataContainer<IncomeSource> incomeSource;
+    inline DataContainer<ExpenseCategory> expenseCategory;
+    inline DataContainer<Income> income;
+    inline DataContainer<Expense> expense;
+    inline DataContainer<RecurringIncome> recurringIncome;
+    inline DataContainer<RecurringExpense> recurringExpense;
 
-void serializeData();
-void deserializeData();
+    // void serializeData();
+    // void deserializeData();
+}
