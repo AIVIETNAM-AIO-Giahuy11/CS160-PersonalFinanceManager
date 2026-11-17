@@ -20,7 +20,7 @@ Valid date range from 01-01-1970 to 31-12-3000
     Date difference - : return day count between 2 given date
 ## Utility:
     Date::today() : Get system's date using <ctime>
-    Date::MAX_YEAR <== useful for indefinate transaction
+    Date::MAX_YEAR <== useful for indefinite transaction
     Date::MIN_YEAR
 */
 #pragma once
