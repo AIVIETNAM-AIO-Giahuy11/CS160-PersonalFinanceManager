@@ -3,6 +3,7 @@
 
 bool startSound();
 void playClick();
+void playError();
 void finishSound();
 
 #endif
