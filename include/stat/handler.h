@@ -28,7 +28,7 @@ namespace Stat{
             case Frequency::DAILY:
                 t = _daily_transaction_eval(td0, td1, d0, d1);
                 break;
-            case Frequency::DAILY:
+            case Frequency::WEEKLY:
                 t = _weekly_transaction_eval(td0, td1, d0, d1);
                 break;
         }
