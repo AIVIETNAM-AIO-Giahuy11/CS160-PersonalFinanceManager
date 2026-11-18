@@ -46,7 +46,7 @@ private:
     std::string description = "";
 public:
     _recurring_transaction_base() {}
-    _recurring_transaction_base(Frequency _freq, Date &_date, const Date &_date1, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
+    _recurring_transaction_base(Frequency _freq, Date _date, Date _date1, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
     {
         freq = _freq;
         dateStr = _date;
@@ -60,8 +60,8 @@ public:
     Frequency Freq() const { return freq; }
     int SourceId() const { return sourceId; }
     int WalletId() const { return walletId; }
-    const Date &DateStr() const { return dateStr; }
-    const Date &DateEnd() const { return dateEnd; }
+    Date DateStr() const { return dateStr; }
+    Date DateEnd() const { return dateEnd; }
     Currency Amount() const { return amount; }
     const std::string &Desc() const { return description; }
 
@@ -70,6 +70,6 @@ public:
     void setWalletId(int _walletId) { walletId = _walletId; }
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
-    void setDateStr(const Date &_date) { dateStr = _date; }
-    void setDateEnd(const Date &_date) { dateEnd = _date; }
+    void setDateStr(Date _date) { dateStr = _date; }
+    void setDateEnd(Date _date) { dateEnd = _date; }
 };
