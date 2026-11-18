@@ -13,16 +13,26 @@ namespace Stat{
         return A.Amount();
     }
 
+    int _daily_transaction_eval(Date td0, Date td1, Date d0, Date d1);
+    int _weekly_transaction_eval(Date td0, Date td1, Date d0, Date d1);
+
     template<typename T>
     requires std::same_as<T,RecurringIncome> || std::same_as<T,RecurringExpense>
     Currency evaluateRecurringTransaction(const T &A, Date d0, Date d1)
     {
-        Currency amount = A.Amount();
         Date td0 = A.DateStr(), td1 = A.DateEnd();
 
-        /*
-            process here
-        */
-        return Currency("67k");
+        int t = 0;
+        switch(A.Freq())
+        {
+            case Frequency::DAILY:
+                t = _daily_transaction_eval(td0, td1, d0, d1);
+                break;
+            case Frequency::DAILY:
+                t = _weekly_transaction_eval(td0, td1, d0, d1);
+                break;
+        }
+        
+        return A.Amount()*t;
     }
 }
