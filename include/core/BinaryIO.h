@@ -19,36 +19,33 @@ Field order in every write() must match the order in read().
 
 namespace BinaryIO
 {
-    // Reject lengths above this when reading, so a corrupted file can't trigger a huge allocation
     inline constexpr uint32_t MAX_LEN = 65536;
 
-    /* Plain values (templates must be defined in the header) */
     template<typename T>
-    void Write(std::ostream &out, const T &value)
-    {
+    void Write(std::ostream &out, const T &value) {
         out.write(reinterpret_cast<const char*>(&value), sizeof(T));
         if (!out) throw std::runtime_error("Cannot write data");
     }
 
     template<typename T>
-    T Read(std::istream &in)
-    {
+    T Read(std::istream &in) {
         T value{};
         in.read(reinterpret_cast<char*>(&value), sizeof(T));
         if (!in) throw std::runtime_error("Cannot read data");
         return value;
     }
 
-    /* Strings (not templates, so they need 'inline' in a header) */
-    inline void WriteString(std::ostream &out, const std::string &value)
-    {
-        size_t len = value.size();
+    inline void WriteString(std::ostream &out, const std::string &value) {
+        uint32_t len = static_cast<uint32_t>(value.size());
         if (len > MAX_LEN) throw std::runtime_error("Exceed string length limits");
-        
+        Write<uint32_t>(out, len);
+        if (len > 0) {
+            out.write(value.data(), len);
+            if (!out) throw std::runtime_error("Cannot write string data");
+        }
     }
 
-    inline std::string ReadString(std::istream &in)
-    {
+    inline std::string ReadString(std::istream &in) {
         // TODO
     }
 }
