@@ -66,6 +66,9 @@ public:
     int operator-(const Date &other) const;
 
     static Date today();
+
+    void write(std::ostream &out) const;
+    void read(std::istream &in);
 };
 
 Date operator+(Date A, int k);

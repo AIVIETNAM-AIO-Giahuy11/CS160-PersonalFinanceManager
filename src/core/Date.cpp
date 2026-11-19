@@ -1,4 +1,5 @@
 #include "core/Date.h"
+#include "BinaryIO.h"
 #include <istream>
 #include <ostream>
 #include <exception>
@@ -178,4 +179,18 @@ Date Date::today()
     localtime_r(&t, &tm);      // POSIX, thread-safe
 #endif
     return Date(tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+}
+/* Write/Read functions*/
+void Date::write(std::ostream &out) const {
+    BinaryIO::Write<int32_t>(out, day());
+    BinaryIO::Write<int32_t>(out, month());
+    BinaryIO::Write<int32_t>(out, year());
+}
+
+void Date::read(std::istream &in) {
+    int32_t d = BinaryIO::Read<int32_t>(in);
+    int32_t m = BinaryIO::Read<int32_t>(in);
+    int32_t y = BinaryIO::Read<int32_t>(in);
+    Date temp(d, m, y);
+    *this = temp;
 }
