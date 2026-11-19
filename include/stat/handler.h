@@ -34,9 +34,9 @@ namespace Stat{
             case Frequency::WEEKLY:
                 t = _weekly_transaction_eval(td0, td1, d0, d1);
                 break;
-            // case Frequency::MONTHLY:
-            //     t = _monthly_transaction_eval(td0, td1, d0, d1);
-            //     break;
+            case Frequency::MONTHLY:
+                t = _monthly_transaction_eval(td0, td1, d0, d1);
+                break;
             case Frequency::YEARLY:
                 t = _yearly_transaction_eval(td0, td1, d0, d1);
                 break;
