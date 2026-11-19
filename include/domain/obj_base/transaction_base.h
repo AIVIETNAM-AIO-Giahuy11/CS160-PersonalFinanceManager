@@ -22,6 +22,7 @@ Constructor order: date - amount - sourceid - walletid - desc
 #include "core/DataContainer.h"
 #include "core/Currency.h"
 #include "core/Date.h"
+#include "core/BinaryIO.h"
 
 class _transaction_base{
 private:
@@ -52,4 +53,23 @@ public:
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
     void setDate(const Date &_date) { date = _date; }
+
+    void write(std::ostream &out) const {
+        date.write(out);
+        amount.write(out);
+        BinaryIO::Write<int32_t>(out, sourceId);
+        BinaryIO::Write<int32_t>(out, walletId);
+        BinaryIO::WriteString(out, description);
+    }
+
+    void read(std::istream &in) {
+        Date d;
+        Currency amt;
+        d.read(in);
+        amt.read(in);
+        int32_t srcId = BinaryIO::Read<int32_t>(in);
+        int32_t walId = BinaryIO::Read<int32_t>(in);
+        std::string desc = BinaryIO::ReadString(in);
+        *this = _transaction_base(d, amt, srcId, walId, desc);
+    }
 };
