@@ -30,7 +30,7 @@ Input format:
 
 class Currency{
 private:
-    static constexpr std::string SUFFIX = "VND";
+    static constexpr const char* SUFFIX = "VND";
     static constexpr char DELIM = '.';
     static constexpr long long MAX_AMOUNT = 10'000'000'000'000'000;
 
@@ -41,8 +41,10 @@ private:
 public:
     Currency(): M(0) {}
     Currency(long long _M);
+    
     Currency(const std::string &x);
-
+    long long raw() const { return M; }
+    std::string str(bool showPlus = true) const;
     auto operator<=>(const Currency&) const = default;
 
     friend std::istream &operator>>(std::istream &fin, Currency &A);

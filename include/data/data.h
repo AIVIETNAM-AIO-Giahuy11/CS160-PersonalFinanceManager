@@ -13,6 +13,15 @@ namespace Data
     inline DataContainer<RecurringIncome> recurringIncome;
     inline DataContainer<RecurringExpense> recurringExpense;
 
+    inline void clearAll() {
+        wallet.clear();
+        incomeSource.clear();
+        expenseCategory.clear();
+        income.clear();
+        expense.clear();
+        recurringIncome.clear();
+        recurringExpense.clear();
+    }
     // void serializeData();
     // void deserializeData();
 }
