@@ -17,7 +17,7 @@
 using std::string;
 
 namespace {
-const char* DATA_PATH = "windowns-version.dat";
+const char* DATA_PATH = "PFM.dat";
 
 bool saveChanges() {
     string error;
