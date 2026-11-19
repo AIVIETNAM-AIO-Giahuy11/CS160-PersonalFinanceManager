@@ -1,4 +1,5 @@
 #include "core/Currency.h"
+#include "core/BinaryIO.h"
 #include <algorithm>
 #include <istream>
 #include <ostream>
@@ -163,3 +164,12 @@ Currency Currency::operator-() const
 Currency operator+(Currency A, const Currency &B) { A+=B; return A; }
 Currency operator-(Currency A, const Currency &B) { A-=B; return A;}
 Currency operator*(Currency A, long long k) { A*=k; return A;}
+
+void Currency::write(std::ostream &out) const {
+    BinaryIO::Write<int64_t>(out, M);
+}
+
+void Currency::read(std::istream &in) {
+    int64_t value = BinaryIO::Read<int64_t>(in);
+    *this = Currency(value);
+}

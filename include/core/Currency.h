@@ -53,6 +53,9 @@ public:
     Currency &operator*=(long long k);
     Currency operator-() const;
 
+    void write(std::ostream &out) const;
+    void read(std::istream &in);
+
 };
 
 Currency operator+(Currency A, const Currency &B);
