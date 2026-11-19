@@ -15,6 +15,9 @@ namespace Stat{
 
     int _daily_transaction_eval(Date td0, Date td1, Date d0, Date d1);
     int _weekly_transaction_eval(Date td0, Date td1, Date d0, Date d1);
+    int _monthly_transaction_eval(Date td0, Date td1, Date d0, Date d1);
+    int _yearly_transaction_eval(Date td0, Date td1, Date d0, Date d1);
+
 
     template<typename T>
     requires std::same_as<T,RecurringIncome> || std::same_as<T,RecurringExpense>
@@ -30,6 +33,12 @@ namespace Stat{
                 break;
             case Frequency::WEEKLY:
                 t = _weekly_transaction_eval(td0, td1, d0, d1);
+                break;
+            // case Frequency::MONTHLY:
+            //     t = _monthly_transaction_eval(td0, td1, d0, d1);
+            //     break;
+            case Frequency::YEARLY:
+                t = _yearly_transaction_eval(td0, td1, d0, d1);
                 break;
         }
         
