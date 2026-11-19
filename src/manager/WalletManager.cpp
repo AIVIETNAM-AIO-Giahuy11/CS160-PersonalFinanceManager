@@ -1,4 +1,4 @@
-#include "WalletManager.h"
+#include "manager/WalletManager.h"
 
 #include "data/data.h"
 #include <stdexcept>
