@@ -17,8 +17,7 @@ Field order in every write() must match the order in read().
 #include <stdexcept>
 #include <string>
 
-namespace BinaryIO
-{
+namespace BinaryIO {
     inline constexpr uint32_t MAX_LEN = 65536;
 
     template<typename T>
