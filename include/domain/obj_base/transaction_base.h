@@ -51,6 +51,7 @@ public:
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
     void setDate(const Date &_date) { date = _date; }
+    void setRuleId(int _ruleId) { ruleId = _ruleId; }
 
     void write(std::ostream &out) const {
         date.write(out);
@@ -58,6 +59,7 @@ public:
         BinaryIO::Write<int32_t>(out, sourceId);
         BinaryIO::Write<int32_t>(out, walletId);
         BinaryIO::WriteString(out, description);
+        BinaryIO::Write<int32_t>(out, ruleId);
     }
 
     void read(std::istream &in) {
@@ -68,7 +70,7 @@ public:
         int32_t srcId = BinaryIO::Read<int32_t>(in);
         int32_t walId = BinaryIO::Read<int32_t>(in);
         std::string desc = BinaryIO::ReadString(in);
-        *this = _transaction_base(d, amt, srcId, walId, desc);
+        int32_t rule = BinaryIO::Read<int32_t>(in);
+        *this = _transaction_base(d, amt, srcId, walId, desc, rule);
     }
-    void setRuleId(int _ruleId) { ruleId = _ruleId; }
 };
