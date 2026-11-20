@@ -1,4 +1,3 @@
-// include/service/FinanceService.h
 #pragma once
 #include "core/Currency.h"
 #include "core/Date.h"
