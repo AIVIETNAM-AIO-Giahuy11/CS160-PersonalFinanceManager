@@ -144,7 +144,7 @@ public:
         LHS = RHS.container;
     }
 
-    /*Serialize functions*/
+    /*Binary functions*/
     void write(std::ostream &out) const {
         BinaryIO::Write<int32_t>(out, idHead);
         BinaryIO::Write<uint32_t>(out, static_cast<uint32_t>(container.size()));
