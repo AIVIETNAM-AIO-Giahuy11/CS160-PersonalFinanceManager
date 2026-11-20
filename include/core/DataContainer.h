@@ -80,14 +80,33 @@ private:
     //     return container[pos];
     // }
 public:
+    size_t size() const { return container.size(); }
+    bool empty() const { return container.empty(); }
     bool hasEntry(int id) const { return findIndex(id)!=-1; }
-
-    /* Modify data */
-    void addEntry(const Data &A)
-    {
-        container.push_back(IdData<Data>(idHead++, A));
+    void clear() {
+        container.clear();
+        idHead = 0;
     }
-
+    /* Modify data */
+    int addEntry(const Data &A) {
+        int newId = idHead++;
+        container.push_back(IdData<Data>(newId, A));
+        return newId;
+    }
+    // Dùng khi đọc từ file để bảo toàn ID gốc và giữ mảng luôn tăng dần theo ID
+    bool loadEntry(int id, const Data &A) {
+        if (id < 0 || hasEntry(id)) return false;
+        if (container.empty() || container.back().id < id) {
+            container.push_back(IdData<Data>(id, A));
+        } else {
+            size_t pos = 0;
+            while (pos < container.size() && container[pos].id < id) ++pos;
+            container.insert(pos, IdData<Data>(id, A));
+        }
+        if (id >= idHead) idHead = id + 1;
+        return true;
+    }
+    
     void eraseEntry(int id) // ensure id is valid first
     {
         int t = findIndex(id);
@@ -112,7 +131,9 @@ public:
             throw std::invalid_argument("Id not found, ensure Object is in DataContainer before getEntry()");
         return container[t].Data;
     }
-
+    const IdData<Data> &atIndex(size_t idx) const {
+        return container[idx];
+    }
     const IdData<Data> *begin() const { return container.begin(); }
     const IdData<Data> *end() const { return container.end(); }
 
