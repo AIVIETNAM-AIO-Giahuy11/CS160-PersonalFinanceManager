@@ -28,13 +28,15 @@ Valid date range from 01-01-1970 to 31-12-3000
 #include <compare> // for operator<=>
 #include <iosfwd>
 
-class Date {
+class Date{
 private:
     static constexpr int MIN_DAYNUM = 719468, MAX_DAYNUM = 1096032;
     static constexpr int MONTH_LEN[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     int Y, M, D; /* MUST BE IN THIS ORDER FOR <=> OVERLOAD */
 
+    static bool isLeap(int Y);
+    static int monthLen(int M, int Y);
     static bool validateTuple(int _day, int _month, int _year);
     static bool validateString(const std::string &X, int &_day, int &_month, int &_year);
 
@@ -42,12 +44,7 @@ private:
     static Date num2date(int N);
 public:
     static constexpr int MIN_YEAR = 1970, MAX_YEAR = 3000;
-
-    static bool isLeap(int Y);
-    static int monthLen(int M, int Y);
-    static Date today();
-
-    Date() : Y(MIN_YEAR), M(1), D(1) {}
+    Date(): Y(MIN_YEAR), M(1), D(1) {}
     Date(int _day, int _month, int _year);
     Date(const std::string &x);
 
@@ -59,7 +56,6 @@ public:
     int day() const   { return D; }
     int month() const { return M; }
     int year() const  { return Y; }
-    std::string toPaddedString() const;
 
     Date &operator+=(int k);
     Date &operator-=(int k);
@@ -68,6 +64,8 @@ public:
     Date operator++(int);
     Date operator--(int);
     int operator-(const Date &other) const;
+
+    static Date today();
 };
 
 Date operator+(Date A, int k);
