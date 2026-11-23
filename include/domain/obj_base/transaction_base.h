@@ -32,7 +32,7 @@ private:
     std::string description = "";
 public:
     _transaction_base() {}
-    _transaction_base(const Date &_date, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
+    _transaction_base(Date _date, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
     {
         date = _date;
         amount = _amount;
@@ -43,7 +43,7 @@ public:
 
     int SourceId() const { return sourceId; }
     int WalletId() const { return walletId; }
-    const Date &TransDate() const { return date; }
+    Date TransDate() const { return date; }
     Currency Amount() const { return amount; }
     const std::string &Desc() const { return description; }
 
@@ -51,5 +51,5 @@ public:
     void setWalletId(int _walletId) { walletId = _walletId; }
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
-    void setDate(const Date &_date) { date = _date; }
+    void setDate(Date _date) { date = _date; }
 };
