@@ -3,6 +3,8 @@ Project's data container using an internal monotonic ID system and binary search
 <Data> must be wrapped with IdData<> for Id managing 
 
 # Supported functions:
+    size() : get container size
+    findIndex(int id) : find position of ID in DynamicArray or -1 if not found
     hasEntry(int id) : check if ID is in container
         ex: checking if a WalletId still exist
     
@@ -49,8 +51,6 @@ public:
 
     IdData(int _id = -1, const _D &_d = _D()): id(_id), Data(_d) {}
     int Id() const { return id; }
-
-    friend class DataContainer<_D>; // Expose id access to DataContainer
 };
 
 template<typename Data>
@@ -59,6 +59,12 @@ private:
     int idHead = 0;
     DynamicArray<IdData<Data>> container{};
 
+    // const IdData<Data> &operator[](size_t pos) const
+    // {
+    //     return container[pos];
+    // }
+public:
+    int size() const { return container.size(); }
     int findIndex(int target_id) const
     {
         if (container.empty()) return -1;
@@ -66,20 +72,15 @@ private:
         while (l<r)
         {
             int mid = (l+r)>>1;
-            if (container[mid].id < target_id)
+            if (container[mid].Id() < target_id)
                 l = mid+1;
-            else if (container[mid].id > target_id)
+            else if (container[mid].Id() > target_id)
                 r = mid;
             else
                 return mid;
         }
         return -1;
     }
-    // const IdData<Data> &operator[](size_t pos) const
-    // {
-    //     return container[pos];
-    // }
-public:
     bool hasEntry(int id) const { return findIndex(id)!=-1; }
 
     /* Modify data */
