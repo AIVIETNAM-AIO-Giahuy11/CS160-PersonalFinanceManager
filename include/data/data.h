@@ -13,6 +13,6 @@ namespace Data
     inline DataContainer<RecurringIncome> recurringIncome;
     inline DataContainer<RecurringExpense> recurringExpense;
 
-    // void serializeData();
+    void serializeData();
     // void deserializeData();
 }
