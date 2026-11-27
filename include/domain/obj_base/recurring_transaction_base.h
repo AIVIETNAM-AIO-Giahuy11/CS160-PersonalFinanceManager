@@ -27,6 +27,7 @@ Constructor order: frequency - dateStart - dateEnd - amount - sourceid - walleti
 #include "core/DataContainer.h"
 #include "core/Currency.h"
 #include "core/Date.h"
+#include "core/BinaryIO.h"
 
 enum class Frequency{
     DAILY,
@@ -72,4 +73,31 @@ public:
     void setDesc(const std::string &_desc) { description = _desc; }
     void setDateStr(Date _date) { dateStr = _date; }
     void setDateEnd(Date _date) { dateEnd = _date; }
+
+    void write(std::ostream &out) const {
+        BinaryIO::Write<int32_t>(out, static_cast<int32_t>(freq));
+        dateStr.write(out);
+        dateEnd.write(out);
+        amount.write(out);
+        BinaryIO::Write<int32_t>(out, sourceId);
+        BinaryIO::Write<int32_t>(out, walletId);
+        BinaryIO::WriteString(out, description);
+    }
+
+    void read(std::istream &in) {
+        int32_t f = BinaryIO::Read<int32_t>(in);
+        if (f < 0 || f > static_cast<int32_t>(Frequency::YEARLY))
+            throw std::runtime_error("Invalid frequency");
+
+        Date ds, de;
+        Currency amt;
+        ds.read(in);
+        de.read(in);
+        amt.read(in);
+        int32_t srcId = BinaryIO::Read<int32_t>(in);
+        int32_t walId = BinaryIO::Read<int32_t>(in);
+        std::string desc = BinaryIO::ReadString(in);
+
+        *this = _recurring_transaction_base(static_cast<Frequency>(f), ds, de, amt, srcId, walId, desc);
+    }
 };

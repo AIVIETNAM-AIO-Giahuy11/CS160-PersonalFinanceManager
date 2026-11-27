@@ -13,6 +13,10 @@ namespace Data
     inline DataContainer<RecurringIncome> recurringIncome;
     inline DataContainer<RecurringExpense> recurringExpense;
 
-    // void serializeData();
-    // void deserializeData();
+    inline const std::string SAVE_PATH = "data.dat";
+    inline bool autoSave = true;
+    
+    void serializeData();
+    void deserializeData();
+    void saveIfAuto();
 }

@@ -13,6 +13,7 @@ bool WalletManager::addWallet(const std::string &name)
 {
     if (!isValidName(name)) return false;
     Data::wallet.addEntry(Wallet(name));
+    Data::saveIfAuto();
     return true;
 }
 
@@ -32,6 +33,7 @@ bool WalletManager::renameWallet(int id, const std::string &name)
 {
     if (!Data::wallet.hasEntry(id) || !isValidName(name)) return false;
     Data::wallet.writeEntry(id, Wallet(name));
+    Data::saveIfAuto();
     return true;
 }
 
@@ -52,6 +54,7 @@ bool WalletManager::deleteWallet(int id)
 {
     if (!Data::wallet.hasEntry(id) || isWalletInUse(id)) return false;
     Data::wallet.eraseEntry(id);
+    Data::saveIfAuto();
     return true;
 }
 

@@ -34,6 +34,7 @@ IdData Wrapper:
 
 #pragma once
 #include "core/DynamicArray.h"
+#include "core/BinaryIO.h"
 #include <stdexcept>
 
 static constexpr int NULL_ID = -1;
@@ -74,6 +75,14 @@ private:
                 return mid;
         }
         return -1;
+    }
+
+    bool loadEntry(int id, const Data &d) 
+    {
+        if (id < idHead) return false;
+        container.push_back(IdData<Data>(id, d));
+        idHead = id + 1;
+        return true;
     }
     // const IdData<Data> &operator[](size_t pos) const
     // {
@@ -120,5 +129,34 @@ public:
     friend void operator<<(DynamicArray<IdData<Data>> &LHS, const DataContainer<Data> &RHS)
     {
         LHS = RHS.container;
+    }
+
+    /*Binary functions*/
+    void write(std::ostream &out) const {
+        BinaryIO::Write<int32_t>(out, idHead);
+        BinaryIO::Write<uint32_t>(out, static_cast<uint32_t>(container.size()));
+        for (const auto &e : *this) {
+            BinaryIO::Write<int32_t>(out, e.Id());
+            e.Data.write(out);
+        }
+    }
+
+    void read(std::istream &in) {
+        int32_t savedHead = BinaryIO::Read<int32_t>(in);
+        uint32_t count = BinaryIO::Read<uint32_t>(in);
+        DataContainer temp;
+        for (uint32_t i = 0; i < count; ++i) {
+            int32_t id = BinaryIO::Read<int32_t>(in);
+            Data d;
+            d.read(in);
+            if (!temp.loadEntry(id, d))
+                throw std::runtime_error("Invalid or duplicate id in data file");
+        }
+
+        if (savedHead < temp.idHead)
+            throw std::runtime_error("Invalid next-id in data file");
+        temp.idHead = savedHead;
+
+        *this = temp;
     }
 };

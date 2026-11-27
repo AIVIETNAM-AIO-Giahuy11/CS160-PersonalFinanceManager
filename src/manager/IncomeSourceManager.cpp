@@ -10,6 +10,7 @@ bool IncomeSourceManager::addIncomeSource(const std::string &name)
 {
     if (!isValidName(name)) return false;
     Data::incomeSource.addEntry(IncomeSource(name));
+    Data::saveIfAuto();
     return true;
 }
 
@@ -17,6 +18,7 @@ bool IncomeSourceManager::renameIncomeSource(int id, const std::string &name)
 {
     if (!Data::incomeSource.hasEntry(id) || !isValidName(name)) return false;
     Data::incomeSource.writeEntry(id, IncomeSource(name));
+    Data::saveIfAuto();
     return true;
 }
 
@@ -33,6 +35,7 @@ bool IncomeSourceManager::deleteIncomeSource(int id)
 {
     if (!Data::incomeSource.hasEntry(id) || isIncomeSourceInUse(id)) return false;
     Data::incomeSource.eraseEntry(id);
+    Data::saveIfAuto();
     return true;
 }
 

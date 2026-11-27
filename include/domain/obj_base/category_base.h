@@ -11,6 +11,7 @@ Base object for (id-name) data, such as wallet, expenseCategory, incomeSource
 #pragma once
 #include <string>
 #include "core/DataContainer.h"
+#include "core/BinaryIO.h"
 
 class _category_base{
 private:
@@ -22,4 +23,13 @@ public:
     const std::string &Name() const { return name; }
 
     void setName(const std::string &s) { name = s; }
+
+    void write(std::ostream &out) const {
+        BinaryIO::WriteString(out, name);
+    }
+
+    void read(std::istream &in) {
+        std::string s = BinaryIO::ReadString(in);
+        setName(s);
+    }
 };
