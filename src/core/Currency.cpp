@@ -87,29 +87,7 @@ Currency::Currency(const std::string &x)
         throw std::invalid_argument("Invalid currency (value)");
     M = tmp;
 }
-std::string Currency::str(bool showPlus) const {
-    if (M == 0) return std::string("0 ") + SUFFIX;
 
-    std::string prefix;
-    long long val = M;
-    if (val > 0) {
-        if (showPlus) prefix = "+";
-    } else {
-        prefix = "-";
-        val = -val;
-    }
-
-    std::string digits;
-    int c = 0;
-    while (val > 0) {
-        digits += char(val % 10 + '0');
-        val /= 10;
-        c++;
-        if (val > 0 && c % 3 == 0) digits += DELIM;
-    }
-    std::reverse(digits.begin(), digits.end());
-    return prefix + digits + " " + SUFFIX;
-}
 /* Stream Extractors */
 std::istream &operator>>(std::istream &fin, Currency &A)
 {

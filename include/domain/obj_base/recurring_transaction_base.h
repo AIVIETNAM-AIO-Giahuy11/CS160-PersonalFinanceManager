@@ -29,36 +29,40 @@ Constructor order: frequency - dateStart - dateEnd - amount - sourceid - walleti
 #include "core/Date.h"
 #include "core/BinaryIO.h"
 
-enum class Frequency {
+enum class Frequency{
     DAILY,
     WEEKLY,
     MONTHLY,
     YEARLY
 };
 
-class _recurring_transaction_base {
+class _recurring_transaction_base{
 private:
-    Frequency freq = Frequency::MONTHLY;
+    Frequency freq = Frequency::DAILY;
     Date dateStr = Date();
-    Date dateEnd = Date(31, 12, Date::MAX_YEAR);
+    Date dateEnd = Date();
     Currency amount = Currency();
     int sourceId = NULL_ID;
     int walletId = NULL_ID;
     std::string description = "";
 public:
-    _recurring_transaction_base() = default;
-    _recurring_transaction_base(Frequency _freq, const Date &_date, const Date &_date1,
-                                Currency _amount, int _sourceId, int _walletId,
-                                const std::string &_desc)
-        : freq(_freq), dateStr(_date), dateEnd(_date1), amount(_amount),
-          sourceId(_sourceId), walletId(_walletId), description(_desc) {}
+    _recurring_transaction_base() {}
+    _recurring_transaction_base(Frequency _freq, Date _date, Date _date1, Currency _amount, int _sourceId, int _walletId, const std::string &_desc)
+    {
+        freq = _freq;
+        dateStr = _date;
+        dateEnd = _date1;
+        amount = _amount;
+        sourceId = _sourceId;
+        walletId = _walletId;
+        description = _desc;
+    }
 
     Frequency Freq() const { return freq; }
     int SourceId() const { return sourceId; }
     int WalletId() const { return walletId; }
-    const Date &DateStr() const { return dateStr; }
-    const Date &DateEnd() const { return dateEnd; }
-    bool hasEndDate() const { return dateEnd.year() < Date::MAX_YEAR; }
+    Date DateStr() const { return dateStr; }
+    Date DateEnd() const { return dateEnd; }
     Currency Amount() const { return amount; }
     const std::string &Desc() const { return description; }
 
@@ -67,8 +71,8 @@ public:
     void setWalletId(int _walletId) { walletId = _walletId; }
     void setAmount(Currency _amount) { amount = _amount; }
     void setDesc(const std::string &_desc) { description = _desc; }
-    void setDateStr(const Date &_date) { dateStr = _date; }
-    void setDateEnd(const Date &_date) { dateEnd = _date; }
+    void setDateStr(Date _date) { dateStr = _date; }
+    void setDateEnd(Date _date) { dateEnd = _date; }
 
     void write(std::ostream &out) const {
         BinaryIO::Write<int32_t>(out, static_cast<int32_t>(freq));

@@ -1,6 +1,8 @@
 # Ignore executable files
 *.exe
 
+# Ignore binary files
+*.dat
 
 # Ignore build directories
 build/
