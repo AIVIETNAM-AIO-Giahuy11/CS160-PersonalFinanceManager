@@ -2,13 +2,9 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace {
-    const std::string FILE_PATH = "data.dat";
-}
-
 namespace Data {
     void serializeData() {
-        std::ofstream out(FILE_PATH, std::ios::binary);
+        std::ofstream out(SAVE_PATH, std::ios::binary);
         if (!out.is_open())
             throw std::runtime_error("Cannot open save file for writing");
             
@@ -22,7 +18,7 @@ namespace Data {
     }
 
     void deserializeData() {
-        std::ifstream in(FILE_PATH, std::ios::binary);
+        std::ifstream in(SAVE_PATH, std::ios::binary);
         if (!in.is_open())
             throw std::runtime_error("Cannot open save file for reading");
 
@@ -33,5 +29,10 @@ namespace Data {
         expense.read(in);
         recurringIncome.read(in);
         recurringExpense.read(in);
+    }
+
+    void saveIfAuto() {
+        if (autoSave)
+            serializeData();
     }
 }
