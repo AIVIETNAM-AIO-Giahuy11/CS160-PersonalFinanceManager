@@ -76,6 +76,14 @@ private:
         }
         return -1;
     }
+
+    bool loadEntry(int id, const Data &d) 
+    {
+        if (id < idHead) return false;
+        container.push_back(IdData<Data>(id, d));
+        idHead = id + 1;
+        return true;
+    }
     // const IdData<Data> &operator[](size_t pos) const
     // {
     //     return container[pos];
