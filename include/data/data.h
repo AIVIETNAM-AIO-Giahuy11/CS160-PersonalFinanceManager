@@ -14,5 +14,5 @@ namespace Data
     inline DataContainer<RecurringExpense> recurringExpense;
 
     void serializeData();
-    // void deserializeData();
+    void deserializeData();
 }
